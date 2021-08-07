@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Moretonhampstead Community Church</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="http://use.typekit.com/buk8lzf.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+	<script type="text/javascript">
+
+		$(function(){
+			var $maps    = $('#venue_info')
+			  , $button  = $('#map_display_link')
+			  , $contact = $('#contact')
+			  , maps_inited = false;
+			$button.click(function(){
+				if ($maps.is(':visible')) {
+					// Hide maps
+					$maps.slideUp(300);
+					$contact.animate({'paddingTop': 0}, 300);
+					$button.text($button.text().replace('Hide', 'Show'));
+				} else {
+					$maps.slideDown(300, function(){
+						if ( ! maps_inited) {
+							initialize_maps();
+							maps_inited = true;
+						}
+					});
+					$contact.animate({'paddingTop': 40}, 300);
+					$button.text($button.text().replace('Show', 'Hide'));
+				}
+				return false;
+			});
+
+			if (window.location.hash == '#show_maps') {
+				$button.click();
+			}
+
+			var deobfuscate = function(string) {
+				return string.replace(/ \[at\] /g, '@')
+							 .replace(/ \[dot\] /g, '.');
+			};
+
+			// Fix email address
+			$('a').each(function(){
+				this.href = deobfuscate(unescape(this.href));
+				$(this).text(deobfuscate($(this).text()));
+			});
+		});
+
+		function initialize_maps() {
+
+			var theChapelCoords   = new google.maps.LatLng(50.661037,-3.764309);
+			var sportCenterCoords = new google.maps.LatLng(50.6570,-3.77183);
+
+			var mapDefaults = {
+				zoom: 15,
+				disableDefaultUI: true,
+				scrollwheel: false,
+				zoomControl: true,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+			var theChapelMapOptions = $.extend({
+				center: theChapelCoords
+			}, mapDefaults);
+			var theChapelMap = new google.maps.Map(document.getElementById("chapel_map_canvas"),
+			theChapelMapOptions);
+
+			var sportCenterMapOptions = $.extend({
+				center: sportCenterCoords
+			}, mapDefaults);
+			var sportCenterMap = new google.maps.Map(document.getElementById("sport_center_map_canvas"),
+			sportCenterMapOptions);
+
+			var theChapelMarkerOptions = {
+				position: theChapelCoords,
+				map: theChapelMap,
+				title: 'The Chapel'
+			}
+			var theChapelMarker = new google.maps.Marker(theChapelMarkerOptions);
+
+			var sportCenterMarkerOptions = {
+				position: sportCenterCoords,
+				map: sportCenterMap,
+				title: 'Sports Centre'
+			}
+			var sportCenterMarker = new google.maps.Marker(sportCenterMarkerOptions);
+		}
+    </script>
+
+
+	<style type="text/css">
+		body, html {
+			margin:0;
+			padding:0;
+			font-family: museo-sans, sans-serif;
+			font-weight: 500;
+			background: url(assets/bg-gradient.png) repeat-x top left #bccfe8;
+			margin-bottom: 150px;
+		}
+		h1, h2, h3 {
+			font-family: museo;
+			font-weight: 700;
+		}
+
+		a, a:active, a:visited, a:hover {
+			color: #0072bc;
+			text-decoration: underline;
+		}
+		a:hover {
+			text-decoration: none;
+		}
+
+		h1 {
+			display: block;
+			text-indent: -9000px;
+			overflow: hidden;
+			width: 635px;
+			height: 154px;
+			margin: 40px auto 20px;
+			background: url(assets/logo.png) no-repeat top left;
+		}
+
+		h2 {
+			font-weight: 500;
+			display: block;
+			height: 83px;
+			overflow: visible;
+			position: relative;
+			background: url(assets/banner-bg.png) repeat-x top #f4eb6c;
+			margin: 10px 0;
+			line-height: 75px;
+			font-size: 20px;
+			text-align: center;
+			text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.6);
+		}
+		h2 span.banner_left {
+			position: absolute;
+			display: block;
+			top: 0;
+			left: -14px;
+			width: 14px;
+			height: 87px;
+			background: url(assets/banner-left.png) no-repeat top left;
+		}
+		h2 span.banner_right {
+			position: absolute;
+			display: block;
+			top: 0;
+			right: -24px;
+			width: 24px;
+			height: 82px;
+			background: url(assets/banner-right.png) no-repeat top left;
+		}
+
+		h3 {
+			font-size: 25px;
+			margin-top: 0;
+		}
+
+		#clouds {
+			position: absolute;
+			background: url(assets/clouds.jpg) no-repeat top center;
+			width: 100%;
+			height: 901px;
+			top: 0;
+			left: 0;
+		}
+
+		#wrapper {
+			z-index: 10;
+			position: relative;
+			width: 882px;
+			margin: 0 auto;
+		}
+
+		#sunday, #contact {
+			background: #fff;
+			width: 760px;
+			margin: 0 auto;
+			padding: 40px;
+		}
+
+		#sunday {
+			padding-top: 0;
+		}
+
+		#top_page {
+			background: #fff;
+			width: 840px;
+			margin: 0 auto;
+			padding: 20px 0 0;
+		}
+
+		#contact {
+			padding-top: 0;
+		}
+
+		#venue_info {
+			display: none;
+			background: url(assets/venue-shadow.png) repeat-x top #dfdfdf; /* Old browsers */
+			background: url(assets/venue-shadow.png) repeat-x top -moz-linear-gradient(top, #dfdfdf 0%, #a8a8a8 100%); /* FF3.6+ */
+			background: url(assets/venue-shadow.png) repeat-x top -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dfdfdf), color-stop(100%,#a8a8a8)); /* Chrome,Safari4+ */
+			background: url(assets/venue-shadow.png) repeat-x top -webkit-linear-gradient(top, #dfdfdf 0%,#a8a8a8 100%); /* Chrome10+,Safari5.1+ */
+			background: url(assets/venue-shadow.png) repeat-x top -o-linear-gradient(top, #dfdfdf 0%,#a8a8a8 100%); /* Opera 11.10+ */
+			background: url(assets/venue-shadow.png) repeat-x top -ms-linear-gradient(top, #dfdfdf 0%,#a8a8a8 100%); /* IE10+ */
+			background: url(assets/venue-shadow.png) repeat-x top linear-gradient(top, #dfdfdf 0%,#a8a8a8 100%); /* W3C */
+			background: url(assets/venue-shadow.png) repeat-x top url(assets/venue-shadow.png) repeat-x top;
+			width: 786px;
+			margin: 0 auto;
+			padding: 15px;
+		}
+
+		div.venue_col {
+			width:350px;
+			margin: 0 20px 10px;
+			float: left;
+		}
+		div.venue_map {
+			width: 350px;
+			height: 250px;
+		}
+		div.venue_col p {
+			color: #666;
+			line-height: 1.6em;
+			margin-bottom: 5px;
+		}
+		div.venue_col p span {
+			color: #000;
+			display: block;
+			font-size: 1.2em;
+		}
+		div.venue_col a {
+			font-size: 0.8em;
+			line-height: 2em;
+			float: right;
+			clear: right;
+		}
+
+		#map_display_link {
+			display: block;
+			float: left;
+			text-decoration: none;
+			border: 1px solid #a7a7a7;
+			border-radius: 4px;
+			background: #ffffff; /* Old browsers */
+			background: -moz-linear-gradient(top, #ffffff 0%, #dbdbdb 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dbdbdb)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #ffffff 0%,#dbdbdb 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #ffffff 0%,#dbdbdb 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, #ffffff 0%,#dbdbdb 100%); /* IE10+ */
+			background: linear-gradient(top, #ffffff 0%,#dbdbdb 100%); /* W3C */
+			-webkit-box-shadow: 1 1px 3px rgba(0,0,0,0.27);
+			-moz-box-shadow: 1 1px 3px rgba(0,0,0,0.27);
+			box-shadow: 1 1px 3px rgba(0,0,0,0.27);
+			padding: 7px 12px;
+		}
+
+		#map_display_link:hover {
+			background: #efefef; /* Old browsers */
+			background: -moz-linear-gradient(top, #dbdbdb 0%, #ffffff 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dbdbdb), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #dbdbdb 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #dbdbdb 0%,#ffffff 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, #dbdbdb 0%,#ffffff 100%); /* IE10+ */
+			background: linear-gradient(top, #dbdbdb 0%,#ffffff 100%); /* W3C */
+		}
+
+		div.notice {
+			padding: 10px;
+			background: #ee9;
+			border: 1px solid #aa4;
+		}
+
+		div.notice p {
+			margin-bottom: 0;
+		}
+
+		div.clear {
+			clear: both;
+		}
+	</style>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-30197868-1']);
+	  _gaq.push(['_setDomainName', 'moretoncommunitychurch.org']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</head>
+<body>
+	<div id="clouds">
+	</div>
+	<div id="wrapper">
+		<h1>Moretonhampstead Community Chuch</h1>
+		<div id="top_page">
+			<h2>
+				<span class="banner_left"></span>
+				We&rsquo;re a group of Christians learning how we can follow Jesus together
+				<span class="banner_right"></span>
+			</h2>
+			<a id="show_maps"></a>
+			<div id="sunday">
+				<h3>Sunday Services</h3>
+				<!--
+				<div class="notice">
+					<strong>This Sunday (18th August)</strong> we will not be meeting according to our usual schedule below.
+					<p>We are joining with the other churches of the Bovey Valley Mission Community for our annual celebration.</p>
+
+					<p>It starts at 10:30am and is in a marquee in Parke View Meadow opposite the methodist church in Bovey Tracey - the marquee used for the flower show this Saturday. </p>
+
+					<p><strong>Please bring your own camping chairs as there are very few available!</strong></p>
+					<p>Please get in touch if you need any more details.</p>
+				</div>
+				-->
+				<p>Everybody&rsquo;s welcome to join us at 10:30am on a Sunday.</p>
+				<p>Tea and coffee are served from 10:00am with activities for children during the service.</p>
+				<p>We currently alternate between two venues.</p>
+				<a href="#show_maps" id="map_display_link">Show Venue Information</a>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div id="venue_info">
+			<div id="chapel_col" class="venue_col">
+				<p>1st, 3rd and 5th Sundays of the month at 
+				<span>The Chapel on Fore Street</span></p>
+		       	<div id="chapel_map_canvas" class="venue_map"></div> 
+		       	<a href="	http://maps.google.com/maps?q=The+Chapel,+8+Fore+Street,+Moretonhampstead,+TQ13+8LL%4050.661037,-3.764309&hl=en&ll=50.662901,-3.761272&spn=0.030359,0.055189&sll=50.662901,-3.761272&sspn=0.030359,0.055189&vpsrc=0&t=m&z=14">See larger map</a>
+			</div>
+			<div id="sport_center_col" class="venue_col">
+				<p>2nd and 4th Sundays at 
+				<span>The Sports Centre, North Bovey Road</span></p>
+				<div id="sport_center_map_canvas" class="venue_map"></div>
+				<a href="http://maps.google.com/maps?q=King+George+V+Sports+%26+Community+Centre,+North+Bovey+Road,+Moretonhampstead,+TQ13+8NZ&hl=en&ll=50.658657,-3.768826&spn=0.007264,0.013797&sll=50.658398,-3.769577&sspn=0.00759,0.013797&vpsrc=0&hq=King+George+V+Sports+%26+Community+Centre,&hnear=N+Bovey+Rd,+Moretonhampstead,+Newton+Abbot+TQ13,+United+Kingdom&t=m&z=16">See larger map</a>
+				<br>
+				<a href="http://www.moretonhampstead-devon.co.uk">Sports Centre Website</a>
+			</div>
+			<div class="clear"></div>
+
+		</div>
+		<div id="contact">
+			<h3>Contact Us</h3>
+			<p>We think there&rsquo;s a lot more to being a church than Sunday services</p>
+			<p>If you would like to find out more, you can email us at 
+			<a href="mailto:leadership [at] moretoncommunitychurch [dot] org"
+				>leadership [at] moretoncommunitychurch [dot] org</a>.
+		</div>
+	</div>
+</body>
+</html>

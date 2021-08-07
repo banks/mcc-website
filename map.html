@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript">
+          function initialize() {
+            
+            var theChapelCoords    = new google.maps.LatLng(50.661011, -3.763994);
+            var sportCenterCoords = new google.maps.LatLng(50.6576, -3.769511);
+              
+            var theChapelMapOptions = {
+              zoom: 15,
+              center: theChapelCoords,
+              disableDefaultUI: true,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var theChapelMap = new google.maps.Map(document.getElementById("chapel_map_canvas"),
+                                          theChapelMapOptions);
+            
+            var sportCenterMapOptions = {
+                zoom: 15,
+                center: sportCenterCoords,
+                disableDefaultUI: true,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var sportCenterMap = new google.maps.Map(document.getElementById("sport_center_map_canvas"),
+                                          sportCenterMapOptions);
+            
+            var theChapelMarkerOptions = {
+                position: theChapelCoords,
+                map: theChapelMap,
+                title: 'The Chapel'
+            }
+            var theChapelMarker = new google.maps.Marker(theChapelMarkerOptions);
+            
+            var sportCenterMarkerOptions = {
+                position: sportCenterCoords,
+                map: sportCenterMap,
+                title: 'Sports Centre'
+            }
+            var sportCenterMarker = new google.maps.Marker(sportCenterMarkerOptions);
+          }
+        </script>
+    </head>
+    <body onload="initialize()"> 
+        <div id="chapel_map_canvas" style="width: 350px; height: 250px; float: left; margin: 10px;"></div> 
+        <div id="sport_center_map_canvas" style="width: 350px; height: 250px; float: left; margin: 10px;"></div>
+    </body>
+</html>
